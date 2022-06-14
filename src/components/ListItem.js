@@ -1,12 +1,13 @@
-import { icons } from "./icons";
 import React from "react";
 
 class ListItem extends React.Component {
     render() {
         return (
-            <li className="list-group-item d-flex">
-                {this.props.url}
-                {icons.trash}
+            <li className="list-group-item d-flex justify-content-between">
+                {this.props.item.url}
+                <button className="btn btn-sm" onClick={() => this.props.handleDelete(this.props.item.id)}>
+                    <i className="bi bi-trash-fill"></i>
+                </button>
             </li>
         );
     }

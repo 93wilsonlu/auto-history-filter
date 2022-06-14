@@ -13,29 +13,32 @@ class InputBox extends React.Component {
     handleChange(event) {
         this.setState({ textbox_url: event.target.value });
     }
-    handleSubmit() {
-        this.props.onSubmit(this.state.textbox_url);
-        this.setState({ textbox_url: "" });
+    handleSubmit(event) {
+        if (this.state.textbox_url !== "") {
+            this.props.onSubmit(this.state.textbox_url);
+        }
+        event.preventDefault();
     }
     render() {
         return (
-            <div class="d-flex justify-content-between my-1">
-                <input
-                    type="url"
-                    name="url"
-                    id="url"
-                    value={this.state.textbox_url}
-                    onChange={this.handleChange}
-                />
-                <button
-                    type="button"
-                    class="btn btn-sm btn-primary"
-                    id="add-button"
-                    onClick={this.handleSubmit}
-                >
-                    Add
-                </button>
-            </div>
+            <form
+                className="row justify-content-center align-items-center my-1"
+                onSubmit={this.handleSubmit}
+            >
+                <div className="col-8">
+                    <input
+                        type="text"
+                        className="form-control form-control-sm"
+                        value={this.state.textbox_url}
+                        onChange={this.handleChange}
+                    />
+                </div>
+                <div className="col-4">
+                    <button type="submit" className="btn btn-sm btn-primary">
+                        Add
+                    </button>
+                </div>
+            </form>
         );
     }
 }
