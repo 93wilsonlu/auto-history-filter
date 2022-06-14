@@ -18,6 +18,9 @@ class App extends React.Component {
         this.setState({ url_list: result.url_list || [] });
     }
     async addURL(url) {
+        if (!url.startsWith("http")) {
+            url = "https://" + url;
+        }
         let new_url_list = [
             ...this.state.url_list,
             { id: +new Date(), url: url },
@@ -26,7 +29,7 @@ class App extends React.Component {
             url_list: new_url_list,
         });
         chrome.storage.sync.set({ url_list: new_url_list }, () => {
-            console.log("Added");
+            console.log("Added url");
         });
     }
     async deleteURL(id) {
@@ -35,7 +38,7 @@ class App extends React.Component {
             url_list: new_url_list,
         });
         chrome.storage.sync.set({ url_list: new_url_list }, () => {
-            console.log("Deleted");
+            console.log("Deleted url");
         });
     }
     render() {
