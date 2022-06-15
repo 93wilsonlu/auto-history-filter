@@ -14,8 +14,9 @@ class App extends React.Component {
         this.deleteURL = this.deleteURL.bind(this);
     }
     async componentDidMount() {
-        const result = await chrome.storage.sync.get(["url_list"]);
-        this.setState({ url_list: result.url_list || [] });
+        const url_list =
+            (await chrome.storage.sync.get(["url_list"])).url_list || [];
+        this.setState({ url_list: url_list });
     }
     async addURL(url) {
         if (!url.startsWith("http")) {
