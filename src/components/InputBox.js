@@ -5,7 +5,6 @@ class InputBox extends React.Component {
         super(props);
         this.state = {
             textbox_url: "",
-            url_list: [],
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
