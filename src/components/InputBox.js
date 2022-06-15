@@ -22,22 +22,18 @@ class InputBox extends React.Component {
     render() {
         return (
             <form
-                className="row justify-content-center align-items-center my-1"
+                className="d-flex justify-content-center align-items-center mb-2"
                 onSubmit={this.handleSubmit}
             >
-                <div className="col-8">
-                    <input
-                        type="text"
-                        className="form-control form-control-sm"
-                        value={this.state.textbox_url}
-                        onChange={this.handleChange}
-                    />
-                </div>
-                <div className="col-4">
-                    <button type="submit" className="btn btn-sm btn-primary">
-                        Add
-                    </button>
-                </div>
+                <input
+                    type="text"
+                    className="form-control form-control-sm me-2"
+                    value={this.state.textbox_url}
+                    onChange={this.handleChange}
+                />
+                <button type="submit" className="btn btn-sm btn-primary">
+                    Add
+                </button>
             </form>
         );
     }

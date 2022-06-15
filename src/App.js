@@ -9,16 +9,19 @@ class App extends React.Component {
         super();
         this.state = {
             url_list: [],
+            auto_filter_on: false,
         };
         this.addURL = this.addURL.bind(this);
         this.deleteURL = this.deleteURL.bind(this);
+        this.handleSwitch = this.handleSwitch.bind(this);
+        chrome.storage.sync.get(["url_list", "auto_filter_on"], (obj) => {
+            this.setState({
+                url_list: obj.url_list || [],
+                auto_filter_on: obj.auto_filter_on || false,
+            });
+        });
     }
-    async componentDidMount() {
-        const url_list =
-            (await chrome.storage.sync.get(["url_list"])).url_list || [];
-        this.setState({ url_list: url_list });
-    }
-    async addURL(url) {
+    addURL(url) {
         if (!url.startsWith("http")) {
             url = "https://" + url;
         }
@@ -33,7 +36,7 @@ class App extends React.Component {
             console.log("Added url");
         });
     }
-    async deleteURL(id) {
+    deleteURL(id) {
         let new_url_list = this.state.url_list.filter((item) => item.id !== id);
         this.setState({
             url_list: new_url_list,
@@ -42,17 +45,40 @@ class App extends React.Component {
             console.log("Deleted url");
         });
     }
+    handleSwitch(event) {
+        let auto_filter_on = event.target.checked;
+        this.setState({
+            auto_filter_on: auto_filter_on,
+        });
+        chrome.storage.sync.set({ auto_filter_on: auto_filter_on }, () => {
+            chrome.runtime.sendMessage({
+                message: auto_filter_on ? "AUTO_FILTER_ON" : "AUTO_FILTER_OFF",
+            });
+        });
+    }
     render() {
         return (
-            <div className="container mt-2">
-                <div className="row">
-                    <h1>Auto History Filter</h1>
+            <div className="container my-2">
+                <div className="d-flex justify-content-between align-items-center mb-1">
+                    <h2>Auto History Filter</h2>
                 </div>
                 <InputBox onSubmit={this.addURL} />
                 <List
                     url_list={this.state.url_list}
                     handleDelete={this.deleteURL}
                 />
+                <div class="form-check form-switch mb-1">
+                    <label class="form-check-label text-sm" for="auto-filter">
+                        Auto refresh
+                    </label>
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="auto-filter"
+                        checked={this.state.auto_filter_on}
+                        onChange={this.handleSwitch}
+                    />
+                </div>
             </div>
         );
     }
