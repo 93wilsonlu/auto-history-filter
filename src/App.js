@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /*global chrome*/
 import "./App.css";
 import React from "react";
@@ -65,19 +66,20 @@ class App extends React.Component {
             this.setState({ is_refreshing: false });
         }, 2000);
     }
+    openGithub() {
+        chrome.tabs.create({
+            url: "https://github.com/93wilsonlu/auto-history-filter",
+        });
+    }
     render() {
         let refresh_icon = this.state.is_refreshing ? (
-            <i
-                className="bi bi-check text-success"
-                onClick={this.handleRefresh}
-                style={{ cursor: "pointer" }}
-            ></i>
+            <a href="#" onClick={this.handleRefresh}>
+                <i className="bi bi-check text-success"></i>
+            </a>
         ) : (
-            <i
-                className="bi bi-arrow-clockwise"
-                onClick={this.handleRefresh}
-                style={{ cursor: "pointer" }}
-            ></i>
+            <a href="#" onClick={this.handleRefresh}>
+                <i className="bi bi-arrow-clockwise"></i>
+            </a>
         );
         return (
             <div className="container my-2">
@@ -107,8 +109,9 @@ class App extends React.Component {
                         />
                     </div>
                     <a
-                        href="https://github.com/93wilsonlu/auto-history-filter"
+                        href="#"
                         class="text-decoration"
+                        onClick={this.openGithub}
                     >
                         Github
                     </a>
